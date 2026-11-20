@@ -1,5 +1,8 @@
 package tn.enetcom.maintenance.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.ArrayList;
+import java.util.List;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -30,4 +33,9 @@ public class Technicien {
             joinColumns = @JoinColumn(name = "technicien_id"))
     @Column(name = "competence")
     private Set<Competence> competences = new HashSet<>();
+
+    @OneToMany(mappedBy = "technicien", cascade = CascadeType.ALL,
+            orphanRemoval = true, fetch = FetchType.EAGER)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private List<Indisponibilite> indisponibilites = new ArrayList<>();
 }

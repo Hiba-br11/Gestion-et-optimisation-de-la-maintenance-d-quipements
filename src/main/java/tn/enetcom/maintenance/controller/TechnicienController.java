@@ -5,6 +5,7 @@ import tn.enetcom.maintenance.model.Technicien;
 import tn.enetcom.maintenance.service.TechnicienService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import tn.enetcom.maintenance.model.Indisponibilite;
 
 import java.util.List;
 
@@ -40,5 +41,18 @@ public class TechnicienController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void supprimer(@PathVariable Long id) {
         service.supprimer(id);
+    }
+
+    @PostMapping("/{id}/indisponibilites")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Indisponibilite ajouterIndisponibilite(@PathVariable Long id,
+                                                  @Valid @RequestBody IndisponibiliteRequest r) {
+        return service.ajouterIndisponibilite(id, r.date(), r.motif());
+    }
+
+    @DeleteMapping("/{id}/indisponibilites/{indispoId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void supprimerIndisponibilite(@PathVariable Long id, @PathVariable Long indispoId) {
+        service.supprimerIndisponibilite(id, indispoId);
     }
 }
