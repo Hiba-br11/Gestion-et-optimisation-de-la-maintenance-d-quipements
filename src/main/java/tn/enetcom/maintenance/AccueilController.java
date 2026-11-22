@@ -10,4 +10,14 @@ public class AccueilController {
     public String accueil() {
         return "acceuil";
     }
+
+    @GetMapping("/connexion")
+    public String connexion() {
+        return "connexion";
+    }
+
+    @GetMapping("/inscription")
+    public String inscription() {
+        return "inscription";
+    }
 }

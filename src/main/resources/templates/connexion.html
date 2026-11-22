@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion | Maint-IT</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" th:href="@{/css/auth.css}">
+</head>
+
+<body class="auth-body">
+
+    <header class="auth-top">
+        <a class="auth-brand" th:href="@{/}">
+            <span class="auth-brand-mark">⚙</span>
+            <span>Maint-IT</span>
+        </a>
+
+        <button class="theme-toggle" id="themeToggle"
+                aria-label="Changer le thème">☼ ☾</button>
+    </header>
+
+    <main class="auth-main">
+
+        <section class="auth-card">
+
+            <div class="auth-head">
+                <h1>Connexion</h1>
+                <p>Content de vous revoir. Connectez-vous à votre compte.</p>
+            </div>
+
+            <form id="loginForm" novalidate>
+
+                <div class="input-wrap">
+                    <span class="input-icon">✉</span>
+                    <input type="email" id="email" name="email"
+                           placeholder="Adresse e-mail" autocomplete="email">
+                </div>
+
+                <div class="input-wrap">
+                    <span class="input-icon">▣</span>
+                    <input type="password" id="password" name="password"
+                           placeholder="Mot de passe" autocomplete="current-password">
+                    <button type="button" class="password-toggle"
+                            data-toggle-password="password"
+                            aria-label="Afficher le mot de passe">Afficher</button>
+                </div>
+
+                <div class="login-options">
+                    <label class="remember">
+                        <input type="checkbox" id="remember">
+                        <span>Se souvenir de moi</span>
+                    </label>
+
+                    <a href="mailto:contact@maint-it.tn">Mot de passe oublié ?</a>
+                </div>
+
+                <button type="submit" class="submit-button">Se connecter</button>
+
+                <p class="form-message" id="formMessage" role="alert" hidden></p>
+
+                <div class="separator">
+                    <span></span>
+                    <b>ou</b>
+                    <span></span>
+                </div>
+
+                <button type="button" class="guest-button" id="guestButton">
+                    Accès invité
+                </button>
+
+            </form>
+
+            <p class="auth-switch">
+                Pas encore de compte ?
+                <a th:href="@{/inscription}">S'inscrire</a>
+            </p>
+
+        </section>
+
+        <a class="auth-back" th:href="@{/}">← Retour à l'accueil</a>
+
+    </main>
+
+    <script th:src="@{/js/auth.js}"></script>
+
+</body>
+</html>

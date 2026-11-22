@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription | Maint-IT</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" th:href="@{/css/auth.css}">
+</head>
+
+<body class="auth-body">
+
+    <header class="auth-top">
+        <a class="auth-brand" th:href="@{/}">
+            <span class="auth-brand-mark">⚙</span>
+            <span>Maint-IT</span>
+        </a>
+
+        <button class="theme-toggle" id="themeToggle"
+                aria-label="Changer le thème">☼ ☾</button>
+    </header>
+
+    <main class="auth-main">
+
+        <section class="auth-card">
+
+            <div class="auth-head">
+                <h1>Créer un compte</h1>
+                <p>Quelques informations suffisent pour signaler vos pannes.</p>
+            </div>
+
+            <form id="registerForm" novalidate>
+
+                <div class="field-row">
+                    <div class="input-wrap">
+                        <span class="input-icon">♟</span>
+                        <input type="text" id="nom" name="nom"
+                               placeholder="Nom" autocomplete="family-name">
+                    </div>
+
+                    <div class="input-wrap">
+                        <span class="input-icon">♟</span>
+                        <input type="text" id="prenom" name="prenom"
+                               placeholder="Prénom" autocomplete="given-name">
+                    </div>
+                </div>
+
+                <div class="input-wrap">
+                    <span class="input-icon">✉</span>
+                    <input type="email" id="email" name="email"
+                           placeholder="Adresse e-mail" autocomplete="email">
+                </div>
+
+                <div class="input-wrap">
+                    <span class="input-icon">▣</span>
+                    <input type="password" id="password" name="password"
+                           placeholder="Mot de passe (6 caractères minimum)"
+                           autocomplete="new-password">
+                    <button type="button" class="password-toggle"
+                            data-toggle-password="password"
+                            aria-label="Afficher le mot de passe">Afficher</button>
+                </div>
+
+                <div class="input-wrap">
+                    <span class="input-icon">▣</span>
+                    <input type="password" id="confirmPassword" name="confirmPassword"
+                           placeholder="Confirmer le mot de passe"
+                           autocomplete="new-password">
+                    <button type="button" class="password-toggle"
+                            data-toggle-password="confirmPassword"
+                            aria-label="Afficher le mot de passe">Afficher</button>
+                </div>
+
+                <button type="submit" class="submit-button">Créer mon compte</button>
+
+                <p class="form-message" id="formMessage" role="alert" hidden></p>
+
+            </form>
+
+            <p class="auth-switch">
+                Vous avez déjà un compte ?
+                <a th:href="@{/connexion}">Se connecter</a>
+            </p>
+
+        </section>
+
+        <a class="auth-back" th:href="@{/}">← Retour à l'accueil</a>
+
+    </main>
+
+    <script th:src="@{/js/auth.js}"></script>
+
+</body>
+</html>

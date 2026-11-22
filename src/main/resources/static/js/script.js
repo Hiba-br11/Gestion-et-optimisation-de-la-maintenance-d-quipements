@@ -1,13 +1,4 @@
-
 "use strict";
-
-const API_LOGIN = "/api/auth/login";
-
-const PAGES_PAR_ROLE = {
-    RESPONSABLE: "responsable/tableau-de-bord.html",
-    TECHNICIEN: "technicien/interventions.html",
-    DEMANDEUR: "demandeur/mes-demandes.html",
-};
 
 const $ = (id) => document.getElementById(id);
 const root = document.documentElement;
@@ -51,135 +42,131 @@ mainNav.querySelectorAll("a").forEach((lien) => {
     });
 });
 
-// ---- Afficher / masquer le mot de passe ----
-$("passwordToggle").addEventListener("click", (e) => {
-    const champ = $("password");
-    const visible = champ.type === "text";
-
-    champ.type = visible ? "password" : "text";
-    e.currentTarget.textContent = visible ? "◉" : "Masquer";
-    e.currentTarget.setAttribute(
-        "aria-label",
-        visible ? "Afficher le mot de passe" : "Masquer le mot de passe"
-    );
-});
-
-// ---- Se souvenir de moi ----
-const emailMemorise = localStorage.getItem("email");
-
-if (emailMemorise) {
-    $("email").value = emailMemorise;
-    $("remember").checked = true;
-}
-
-// ---- Messages et validation ----
-function afficherAlerte(message) {
-    const alerte = $("formMessage");
-    alerte.textContent = message;
-    alerte.hidden = !message;
-}
-
-function valider() {
-    const email = $("email").value.trim();
-    const mdp = $("password").value;
-
-    if (!email) {
-        afficherAlerte("Saisissez votre adresse e-mail.");
-        $("email").setAttribute("aria-invalid", "true");
-        return false;
+// ---- Fonctionnalités clés (onglets) ----
+const FONCTIONNALITES = [
+    {
+        id: "demandes",
+        onglet: "Demandes",
+        titre: "Un problème ou une panne ? Signalez-le facilement",
+        texte: "Lorsqu’une panne survient, le demandeur peut créer une demande en décrivant le problème rencontré, en précisant son niveau d’urgence et en suivant son évolution jusqu’à sa résolution.",
+        points: [
+            "Quatre niveaux de priorité : critique, haute, normale et basse",
+            "Durée estimée comprise entre 1 et 8 heures ; au-delà, la demande est refusée",
+            "Suivi des différents statuts : ouverte, assignée, en cours ou terminée"
+        ],
+        image: "demandes.jpg"
+    },
+    {
+        id: "planification",
+        onglet: "Planification",
+        titre: "Une organisation optimisée des interventions",
+        texte: "Le responsable définit les journées de travail et l’application propose une répartition des demandes en tenant compte des priorités, des compétences des techniciens et de leur disponibilité.",
+        points: [
+            "Les demandes les plus urgentes et les plus anciennes sont traitées en priorité",
+            "Le responsable peut ajuster la planification avant de la valider",
+            "Une comparaison permet d’évaluer les résultats de la planification proposée"
+        ],
+        image: "planification.jpg"
+    },
+    {
+        id: "planning",
+        onglet: "Planning",
+        titre: "Un suivi clair de l’activité des techniciens",
+        texte: "Le planning offre une vue quotidienne des interventions de chaque technicien, permettant de consulter rapidement sa charge de travail et ses disponibilités.",
+        points: [
+            "Affichage de la charge de travail en heures, avec une limite de 8 heures par jour",
+            "Visualisation des jours d’indisponibilité directement sur le planning",
+            "Signalement des situations où les règles de planification ne sont pas respectées"
+        ],
+        image: "planning.jpg"
+    },
+    {
+        id: "alertes",
+        onglet: "Alertes",
+        titre: "Une communication au bon moment",
+        texte: "Les notifications permettent d’informer automatiquement chaque intervenant des événements importants liés aux demandes et aux interventions.",
+        points: [
+            "Le responsable reçoit un e-mail lorsqu’une nouvelle demande est créée",
+            "Le technicien est averti lorsqu’une intervention lui est attribuée",
+            "Le demandeur est informé lorsque sa panne est résolue"
+        ],
+        image: "alertes.jpg"
+    },
+    {
+        id: "tableaux-de-bord",
+        onglet: "Tableaux de bord",
+        titre: "Une vision globale grâce aux indicateurs",
+        texte: "Le responsable dispose de graphiques et d’indicateurs synthétiques pour suivre l’activité, analyser les performances et faciliter la prise de décision.",
+        points: [
+            "Répartition des demandes selon leur statut, leur catégorie et leur priorité",
+            "Suivi du délai moyen de résolution et du respect des délais",
+            "Visualisation de la charge de travail des techniciens et des demandes en attente"
+        ],
+        image: "tableaux_de_bord.jpg"
     }
+];
 
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        afficherAlerte("Cette adresse e-mail n’est pas valide.");
-        $("email").setAttribute("aria-invalid", "true");
-        return false;
-    }
+const tabsBox = $("featureTabs");
+const keyPanel = $("keyPanel");
+const boutonsOnglets = [];
 
-    if (!mdp) {
-        afficherAlerte("Saisissez votre mot de passe.");
-        $("password").setAttribute("aria-invalid", "true");
-        return false;
-    }
+function afficherFonctionnalite(index, animer = true) {
+    const f = FONCTIONNALITES[index];
 
-    if (mdp.length < 6) {
-        afficherAlerte("Le mot de passe doit contenir au moins 6 caractères.");
-        $("password").setAttribute("aria-invalid", "true");
-        return false;
-    }
-
-    $("email").setAttribute("aria-invalid", "false");
-    $("password").setAttribute("aria-invalid", "false");
-    afficherAlerte("");
-
-    return true;
-}
-
-["email", "password"].forEach((id) => {
-    $(id).addEventListener("input", () => {
-        $("formMessage").textContent = "";
-        $("formMessage").hidden = true;
-        $(id).setAttribute("aria-invalid", "false");
+    boutonsOnglets.forEach((bouton, i) => {
+        const actif = i === index;
+        bouton.setAttribute("aria-selected", String(actif));
+        bouton.tabIndex = actif ? 0 : -1;
     });
-});
 
-// ---- Envoi du formulaire ----
-$("loginForm").addEventListener("submit", async (e) => {
-    e.preventDefault();
+    $("keyKicker").textContent = f.onglet.toUpperCase();
+    $("keyTitle").textContent = f.titre;
+    $("keyText").textContent = f.texte;
+    $("keyPhoto").style.setProperty("--img", "url('/images/" + f.image + "')");
+    keyPanel.setAttribute("aria-labelledby", "tab-" + f.id);
 
-    if (!valider()) return;
+    const liste = $("keyList");
+    liste.textContent = "";
+    f.points.forEach((point) => {
+        const li = document.createElement("li");
+        li.textContent = point;
+        liste.appendChild(li);
+    });
 
-    if ($("remember").checked) {
-        localStorage.setItem("email", $("email").value.trim());
-    } else {
-        localStorage.removeItem("email");
+    if (animer) {
+        keyPanel.classList.remove("is-changing");
+        void keyPanel.offsetWidth;
+        keyPanel.classList.add("is-changing");
     }
+}
 
-    const bouton = $("loginForm").querySelector('button[type="submit"]');
+FONCTIONNALITES.forEach((f, i) => {
+    const bouton = document.createElement("button");
+    bouton.type = "button";
+    bouton.className = "tab";
+    bouton.id = "tab-" + f.id;
+    bouton.setAttribute("role", "tab");
+    bouton.setAttribute("aria-controls", "keyPanel");
+    bouton.textContent = f.onglet;
 
-    bouton.disabled = true;
-    bouton.textContent = "Connexion en cours…";
+    bouton.addEventListener("click", () => afficherFonctionnalite(i));
 
-    try {
-        const reponse = await fetch(API_LOGIN, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            credentials: "same-origin",
-            body: JSON.stringify({
-                email: $("email").value.trim(),
-                motDePasse: $("password").value
-            })
-        });
+    bouton.addEventListener("keydown", (e) => {
+        let cible = null;
 
-        if (reponse.status === 401) {
-            afficherAlerte("Adresse e-mail ou mot de passe incorrect.");
-            return;
+        if (e.key === "ArrowRight") cible = (i + 1) % FONCTIONNALITES.length;
+        if (e.key === "ArrowLeft") cible = (i - 1 + FONCTIONNALITES.length) % FONCTIONNALITES.length;
+
+        if (cible !== null) {
+            e.preventDefault();
+            afficherFonctionnalite(cible);
+            boutonsOnglets[cible].focus();
         }
+    });
 
-        if (!reponse.ok) {
-            throw new Error("HTTP " + reponse.status);
-        }
-
-        const { role } = await reponse.json();
-        const page = PAGES_PAR_ROLE[role];
-
-        if (!page) {
-            throw new Error("Rôle inconnu : " + role);
-        }
-
-        window.location.href = page;
-
-    } catch (err) {
-        console.error(err);
-        afficherAlerte(
-            "Connexion impossible pour le moment. Vérifiez que le serveur est démarré."
-        );
-    } finally {
-        bouton.disabled = false;
-        bouton.textContent = "➜ Se connecter";
-    }
+    boutonsOnglets.push(bouton);
+    tabsBox.appendChild(bouton);
 });
 
-// ---- Accès invité ----
-$("guestButton").addEventListener("click", () => {
-    window.location.href = "invite.html";
-});
+// Par défaut : la première fonctionnalité est affichée
+afficherFonctionnalite(0, false);

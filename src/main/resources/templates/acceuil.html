@@ -1,6 +1,5 @@
-
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -45,10 +44,8 @@
         <!-- SECTION PRINCIPALE -->
         <section class="hero" id="accueil">
 
-            <div class="hero-photo"></div>
-            <div class="hero-wash"></div>
+            <div class="hero-photo hero-photo--left" aria-hidden="true"></div>
 
-            <!-- PRESENTATION -->
             <div class="hero-content">
                 <h1>
                     Solution intelligente<br>
@@ -62,8 +59,71 @@
                     planifier les interventions et optimiser l’affectation de vos techniciens grâce à notre application.
                 </p>
 
-                <!-- FONCTIONNALITES -->
-                <div class="feature-row" id="fonctionnalites">
+                <div class="hero-actions">
+                    <a class="btn btn-primary" th:href="@{/connexion}">Se connecter</a>
+                    <a class="btn btn-secondary" th:href="@{/inscription}">S'inscrire</a>
+                </div>
+            </div>
+
+            <div class="hero-photo hero-photo--right" aria-hidden="true"></div>
+
+        </section>
+
+        <!-- PROBLEME / SOLUTION -->
+        <section class="section" id="probleme">
+
+            <p class="section-kicker">POURQUOI MAINT-IT ?</p>
+            <h2 class="section-title">Du problème à la solution</h2>
+
+            <div class="ps-grid">
+
+                <article class="ps-card ps-card--problem">
+                    <div class="photo photo--prob" aria-hidden="true"></div>
+                    <h3>Quel est le problème ?</h3>
+                    <p>
+                        Pannes signalées par téléphone ou à l’oral, aucun suivi des interventions,
+                        techniciens surchargés et parc d’équipements mal connu.
+                    </p>
+                </article>
+
+                <article class="ps-card ps-card--solution">
+                    <div class="photo photo--sol" aria-hidden="true"></div>
+                    <h3>Quelle est la solution ?</h3>
+                    <p>
+                        Maint-IT centralise les demandes, planifie les interventions selon l’urgence
+                        et les compétences, et suit chaque panne jusqu’à sa résolution.
+                    </p>
+                </article>
+
+            </div>
+        </section>
+
+        <!-- A PROPOS -->
+        <section class="section about-section" id="apropos">
+
+            <p class="section-kicker">MAINT-IT EN QUELQUES MOTS</p>
+            <h2>Une maintenance mieux organisée</h2>
+
+            <p>
+                Une plateforme centralisée pour déclarer les pannes,
+                suivre les interventions et aider le responsable à
+                affecter chaque demande au technicien le plus adapté,
+                selon ses compétences et ses disponibilités.
+            </p>
+
+        </section>
+
+        <!-- FONCTIONNALITES -->
+        <section class="section section-alt" id="fonctionnalites">
+
+            <p class="section-kicker">FONCTIONNALITÉS</p>
+            <h2 class="section-title">Tout pour simplifier la maintenance</h2>
+
+            <div class="split">
+
+                <div class="photo photo--fonction" aria-hidden="true"></div>
+
+                <div class="feature-row">
 
                     <div class="feature">
                         <div class="feature-icon">ϟ</div>
@@ -86,126 +146,61 @@
                     </div>
 
                 </div>
-
-                <a href="#apropos" class="discover-button">
-                    Découvrir l'application <span>→</span>
-                </a>
             </div>
+        </section>
 
-            <!-- CONNEXION -->
-            <aside class="login-panel" id="connexion">
+        <!-- FONCTIONNALITES CLES (onglets) -->
+        <section class="section" id="cles">
 
-                <div class="login-brand">
-                    <div class="login-logo">⚙</div>
-                    <h2>Maint-IT</h2>
-                    <p>Connectez-vous à votre compte</p>
-                </div>
+            <p class="section-kicker">EN DÉTAIL</p>
+            <h2 class="section-title">Découvrez les fonctionnalités clés de notre application</h2>
 
-                <form id="loginForm">
+            <div class="tabs" id="featureTabs" role="tablist"
+                 aria-label="Fonctionnalités clés"></div>
 
-                    <div class="input-wrap">
-                        <span class="input-icon">✉</span>
-                        <input type="email" id="email"
-                               placeholder="Adresse email" required>
-                    </div>
+            <div class="key-panel" id="keyPanel" role="tabpanel">
+                <div class="photo key-photo" id="keyPhoto" aria-hidden="true"></div>
 
-                    <div class="input-wrap">
-                        <span class="input-icon">▣</span>
-                        <input type="password" id="password"
-                               placeholder="Mot de passe" required>
-                        <button type="button" class="password-toggle"
-                                id="passwordToggle"
-                                aria-label="Afficher le mot de passe">◉</button>
-                    </div>
-
-                    <div class="login-options">
-                        <label class="remember">
-                            <input type="checkbox" id="remember">
-                            <span>Se souvenir de moi</span>
-                        </label>
-
-                        <a href="#contact" id="forgotLink">
-                            Mot de passe oublié ?
-                        </a>
-                    </div>
-
-                    <button type="submit" class="submit-button">
-                        ➜ Se connecter
-                    </button>
-
-                    <p class="form-message" id="formMessage" hidden></p>
-
-                    <div class="separator">
-                        <span></span>
-                        <b>ou</b>
-                        <span></span>
-                    </div>
-
-                    <button type="button" class="guest-button" id="guestButton">
-                        ♟ Accès invité
-                    </button>
-
-                </form>
-
-                <p class="login-note">
-                    Accès réservé aux utilisateurs autorisés
-                </p>
-
-            </aside>
+                <article class="key-card">
+                    <p class="key-kicker" id="keyKicker"></p>
+                    <h3 id="keyTitle"></h3>
+                    <p class="key-text" id="keyText"></p>
+                    <ul class="key-list" id="keyList"></ul>
+                </article>
+            </div>
 
         </section>
 
         <!-- STATISTIQUES -->
-        <section class="stats-strip" id="avantages">
+        <section class="section section-alt" id="avantages">
 
-            <div class="stat">
-                <span class="stat-icon">▣</span>
-                <div>
-                    <strong>100%</strong>
-                    <small>Disponibilité ciblée</small>
+            <div class="split">
+
+                <div class="stats-list">
+                    <p class="section-kicker">OBJECTIFS VISÉS</p>
+                    <h2>Ce que Maint-IT change au quotidien</h2>
+
+                    <div class="pill">
+                        <strong>- 20 %</strong>
+                        <span>arrêts imprévus</span>
+                    </div>
+
+                    <div class="pill">
+                        <strong>+ 30 %</strong>
+                        <span>durée de vie des équipements</span>
+                    </div>
+
+                    <div class="pill">
+                        <strong>- 25 %</strong>
+                        <span>délai d’intervention</span>
+                    </div>
+
+                    <p class="stats-note">Valeurs estimées.</p>
                 </div>
+
+                <div class="photo photo--statistiques" aria-hidden="true"></div>
+
             </div>
-
-            <div class="stat">
-                <span class="stat-icon">◷</span>
-                <div>
-                    <strong>&lt; 2h</strong>
-                    <small>Délai moyen d’intervention</small>
-                </div>
-            </div>
-
-            <div class="stat">
-                <span class="stat-icon">♢</span>
-                <div>
-                    <strong>98%</strong>
-                    <small>Taux de résolution</small>
-                </div>
-            </div>
-
-            <div class="stat team-stat">
-                <span class="stat-icon">♟</span>
-                <div>
-                    <strong>Une équipe experte</strong>
-                    <small>à votre service</small>
-                </div>
-            </div>
-
-        </section>
-
-        <!-- A PROPOS -->
-        <section class="about-section" id="apropos">
-
-            <p class="section-kicker">MAINT-IT EN QUELQUES MOTS</p>
-
-            <h2>Une maintenance mieux organisée</h2>
-
-            <p>
-                Une plateforme centralisée pour déclarer les pannes,
-                suivre les interventions et aider le responsable à
-                affecter chaque demande au technicien le plus adapté,
-                selon ses compétences et ses disponibilités.
-            </p>
-
         </section>
 
     </main>
