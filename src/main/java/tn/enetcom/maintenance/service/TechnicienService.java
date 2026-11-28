@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import tn.enetcom.maintenance.model.Indisponibilite;
 import tn.enetcom.maintenance.repository.IndisponibiliteRepository;
+import tn.enetcom.maintenance.repository.UtilisateurRepository;
 import java.time.LocalDate;
 
 import java.util.List;
@@ -17,6 +18,7 @@ import java.util.List;
 public class TechnicienService {
     private final TechnicienRepository repo;
     private final IndisponibiliteRepository indispoRepo;
+    private final UtilisateurRepository utilisateurRepo;
 
     public List<Technicien> lister() {
         return repo.findAll();
@@ -40,7 +42,13 @@ public class TechnicienService {
     }
 
     public void supprimer(Long id) {
-        repo.delete(trouver(id));
+        Technicien t = trouver(id);
+
+        if (utilisateurRepo.findByTechnicienId(id).isPresent()) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT,
+                    "Ce technicien a un compte utilisateur : supprime d'abord le compte");
+        }
+        repo.delete(t);
     }
 
     public Indisponibilite ajouterIndisponibilite(Long technicienId, LocalDate date, String motif) {

@@ -6,6 +6,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.dao.DataIntegrityViolationException;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -35,5 +36,11 @@ public class GestionErreurs {
     public ResponseEntity<Map<String, Object>> jsonIllisible(HttpMessageNotReadableException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("erreur",
                 "Requête illisible : vérifie le format du JSON, les dates (AAAA-MM-JJ) et les valeurs autorisées"));
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<Map<String, Object>> contrainteBase(DataIntegrityViolationException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("erreur",
+                "Opération impossible : cet élément est utilisé ailleurs ou provoque un doublon"));
     }
 }
